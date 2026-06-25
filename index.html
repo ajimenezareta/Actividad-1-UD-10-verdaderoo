@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@500;700&display=swap" rel="stylesheet">
+    <style>
+        body { 
+            background: radial-gradient(circle, #2d1b4e 0%, #0f0c29 100%); 
+            color: white; font-family: 'Quicksand', sans-serif; padding: 20px; 
+            display: flex; flex-direction: column; align-items: center; 
+        }
+        .container { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; width: 90%; }
+        .magic-line { 
+            background: rgba(255, 255, 255, 0.1); border: 2px solid rgba(255, 255, 255, 0.2); 
+            border-radius: 30px; padding: 20px; min-height: 250px; 
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5); backdrop-filter: blur(10px);
+        }
+        .slot { 
+            background: rgba(255, 255, 255, 0.05); border: 2px dashed rgba(255, 255, 255, 0.3); 
+            margin: 10px 0; padding: 10px; border-radius: 15px; text-align: center; color: #ffd700;
+        }
+        .label { 
+            padding: 12px; background: linear-gradient(135deg, #ff9a9e 0%, #fad0c4 100%); 
+            color: #333; cursor: grab; border-radius: 20px; font-weight: bold; 
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2); transition: transform 0.2s;
+        }
+        .label:hover { transform: scale(1.05); }
+        #feedback { 
+            margin-top: 30px; padding: 20px; width: 80%; text-align: center; 
+            border-radius: 20px; background: rgba(255, 255, 255, 0.15); 
+            border: 2px solid #ffd700; font-weight: bold;
+        }
+        h2 { text-shadow: 0 0 10px #ffd700; }
+    </style>
+</head>
+<body>
+    <h1 style="color:#ffd700;">✨ ¡Misión Encantada: Ordenando la Historia! ✨</h1>
+    
+    <div class="container">
+        <div><h2>📜 PREHISTORIA</h2><div class="magic-line" id="pre"><div class="slot" id="pre-1" ondrop="drop(event)" ondragover="allowDrop(event)">1</div><div class="slot" id="pre-2" ondrop="drop(event)" ondragover="allowDrop(event)">2</div><div class="slot" id="pre-3" ondrop="drop(event)" ondragover="allowDrop(event)">3</div><div class="slot" id="pre-4" ondrop="drop(event)" ondragover="allowDrop(event)">4</div></div></div>
+        <div><h2>⏳ HISTORIA</h2><div class="magic-line" id="hist"><div class="slot" id="hist-1" ondrop="drop(event)" ondragover="allowDrop(event)">1</div><div class="slot" id="hist-2" ondrop="drop(event)" ondragover="allowDrop(event)">2</div><div class="slot" id="hist-3" ondrop="drop(event)" ondragover="allowDrop(event)">3</div><div class="slot" id="hist-4" ondrop="drop(event)" ondragover="allowDrop(event)">4</div></div></div>
+    </div>
+
+    <div id="feedback">¡Arrastra las piezas mágicas para empezar la aventura!</div>
+
+    <div id="bank" style="margin-top:30px; display:flex; gap:10px; flex-wrap:wrap; justify-content:center;">
+        <div class="label" draggable="true" id="paleo" ondragstart="drag(event)" data-pos="pre-1">PALEOLÍTICO</div>
+        <div class="label" draggable="true" id="meso" ondragstart="drag(event)" data-pos="pre-2">MESOLÍTICO</div>
+        <div class="label" draggable="true" id="neo" ondragstart="drag(event)" data-pos="pre-3">NEOLÍTICO</div>
+        <div class="label" draggable="true" id="metal" ondragstart="drag(event)" data-pos="pre-4">EDAD METALES</div>
+        <div class="label" draggable="true" id="antig" ondragstart="drag(event)" data-pos="hist-1">ANTIGUA</div>
+        <div class="label" draggable="true" id="media" ondragstart="drag(event)" data-pos="hist-2">MEDIA</div>
+        <div class="label" draggable="true" id="modern" ondragstart="drag(event)" data-pos="hist-3">MODERNA</div>
+        <div class="label" draggable="true" id="contem" ondragstart="drag(event)" data-pos="hist-4">CONTEMPORÁNEA</div>
+    </div>
+
+    <script>
+        const info = { paleo: "¡Brillante! El Paleolítico es el inicio del camino, el uso de piedra tallada.", meso: "¡Magia en el aire! El Mesolítico es la transición al cambio.", neo: "¡Increíble! El Neolítico trajo la agricultura y los primeros hogares.", metal: "¡Fuerza pura! La Edad de los Metales transformó el mundo.", antig: "¡Maravilloso! La Historia comienza con las grandes civilizaciones.", media: "¡Un cuento de caballeros! La Edad Media es historia viva.", modern: "¡Qué aventura! La Edad Moderna nos trajo descubrimientos increíbles.", contem: "¡Estás en el presente! La era contemporánea es el mundo actual." };
+        function allowDrop(e) { e.preventDefault(); }
+        function drag(e) { e.dataTransfer.setData("text", e.target.id); e.dataTransfer.setData("pos", e.target.dataset.pos); }
+        function drop(e) {
+            e.preventDefault();
+            const id = e.dataTransfer.getData("text");
+            const pos = e.dataTransfer.getData("pos");
+            const feedback = document.getElementById("feedback");
+            if (e.target.id === pos) {
+                e.target.appendChild(document.getElementById(id));
+                feedback.innerText = "✨ " + info[id];
+                feedback.style.color = "#ffd700";
+            } else { feedback.innerText = "🌀 ¡Vaya! Ese trozo de historia no encaja ahí. ¡Inténtalo de nuevo!"; feedback.style.color = "#ff9a9e"; }
+        }
+    </script>
+</body>
+</html>
